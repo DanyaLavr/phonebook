@@ -1,5 +1,7 @@
 import { createEntityAdapter, createSlice } from "@reduxjs/toolkit";
-import { addCall, deleteCall, fetchContacts } from "./operations";
+
+import { addCall, deleteCall } from "./operations";
+import { fetchContacts } from "../contacts/operations";
 
 const callsAdapter = createEntityAdapter();
 const initialState = callsAdapter.getInitialState({
@@ -9,14 +11,13 @@ const initialState = callsAdapter.getInitialState({
 const callsSlice = createSlice({
   name: "calls",
   initialState,
+
   extraReducers: (builder) => {
     builder.addCase(fetchContacts.fulfilled, (state, action) => {
-      console.log(action.payload);
       callsAdapter.setAll(state, action.payload?.calls ?? []);
     });
     builder
       .addCase(addCall.fulfilled, (state, action) => {
-        console.log("calls", action.payload);
         callsAdapter.upsertMany(state, action.payload?.calls ?? []);
       })
       .addCase(deleteCall.fulfilled, (state, action) => {

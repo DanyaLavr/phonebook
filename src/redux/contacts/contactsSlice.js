@@ -1,12 +1,7 @@
 import { createEntityAdapter, createSlice } from "@reduxjs/toolkit";
 
-import {
-  addCall,
-  addContact,
-  deleteCall,
-  deleteContact,
-  fetchContacts,
-} from "./operations";
+import { addContact, deleteContact, fetchContacts } from "./operations";
+import { addCall, deleteCall } from "../calls/operations";
 
 const contactsAdapter = createEntityAdapter();
 const initialState = contactsAdapter.getInitialState({
@@ -16,7 +11,11 @@ const initialState = contactsAdapter.getInitialState({
 const contactsSlice = createSlice({
   name: "contacts",
   initialState,
-  reducers: {},
+  reducers: {
+    clearContacts: (state) => {
+      contactsAdapter.removeAll(state);
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(fetchContacts.pending, (state) => {
@@ -40,7 +39,6 @@ const contactsSlice = createSlice({
       })
       .addCase(addCall.fulfilled, (state, action) => {
         state.isLoading = false;
-        console.log("contacts", action.payload);
         contactsAdapter.upsertOne(state, action.payload.contact);
       })
       .addCase(deleteCall.fulfilled, (state, action) => {
@@ -52,3 +50,4 @@ export const { selectAll: selectContacts } = contactsAdapter.getSelectors(
   (state) => state.contacts
 );
 export const contactsReducer = contactsSlice.reducer;
+export const { clearContacts } = contactsSlice.actions;

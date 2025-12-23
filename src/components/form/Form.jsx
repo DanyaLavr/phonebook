@@ -1,7 +1,8 @@
 import { nanoid } from "nanoid";
 import { useDispatch, useSelector } from "react-redux";
-import { addContact } from "../../../redux/operations";
-import { selectContacts } from "../../../redux/contactsSlice";
+
+import { addContact } from "../../redux/contacts/operations";
+import { selectContacts } from "../../redux/contacts/contactsSlice";
 
 export default function Form() {
   const contacts = useSelector(selectContacts);
@@ -21,7 +22,7 @@ export default function Form() {
     for (let [key, value] of formData.entries()) {
       contact[key] = value.trim();
     }
-    console.log(contact);
+
     if (checkIsRegistered(contact)) {
       alert("You already have this contact");
       return;

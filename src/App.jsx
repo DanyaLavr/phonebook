@@ -1,31 +1,42 @@
-import "./App.css";
-import Form from "./assets/components/form/Form";
-import ContactsList from "./assets/components/contactsList/ContactsList";
-import Finder from "./assets/components/finder/Finder";
-import { useDispatch } from "react-redux";
-import { useEffect } from "react";
-import { fetchContacts } from "./redux/operations";
+import { Route, Routes } from "react-router-dom";
+import { Suspense } from "react";
 
-function App() {
-  const dispatch = useDispatch();
-  useEffect(() => {
-    dispatch(fetchContacts());
-  }, [dispatch]);
+import HomePage from "./pages/Home";
+import ContactsPage from "./pages/Contacts";
+import LoginPage from "./pages/Login";
+import RegisterPage from "./pages/Register";
+import Layout from "./layout";
+
+import "./App.css";
+import UserRoute from "./components/routes/UserRoute";
+import GuestRoute from "./components/routes/GuestRoute";
+
+export default function App() {
   return (
-    <div className="min-h-screen bg-gray-100 py-10">
-      <div className="mx-auto w-full max-w-md space-y-6">
-        <h1 className="text-center text-2xl font-semibold text-gray-800">
-          Phonebook
-        </h1>
-        <Form />
-        <div className="space-y-3">
-          <h2 className="text-lg font-medium text-gray-700">Contacts</h2>
-          <Finder />
-          <ContactsList />
-        </div>
-      </div>
-    </div>
+    <Routes>
+      <Route path="/" element={<Layout />}>
+        <Route index element={<HomePage />} />
+        <Route
+          path="/contacts"
+          element={
+            <UserRoute
+              component={
+                <Suspense fallback="<div>Loading...</div>">
+                  <ContactsPage />
+                </Suspense>
+              }
+            />
+          }
+        />
+        <Route
+          path="/login"
+          element={<GuestRoute component={<LoginPage />} />}
+        />
+        <Route
+          path="/register"
+          element={<GuestRoute component={<RegisterPage />} />}
+        />
+      </Route>
+    </Routes>
   );
 }
-
-export default App;

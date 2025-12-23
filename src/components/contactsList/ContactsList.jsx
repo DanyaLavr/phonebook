@@ -1,13 +1,24 @@
 import { useDispatch, useSelector } from "react-redux";
+import { useEffect } from "react";
 
-import { selectFilteredContacts } from "../../../redux/selectors";
-import { addCall, deleteContact } from "../../../redux/operations";
 import CallsList from "../callsList/CallsList";
+import ContactsLoader from "../contacts-loader/ContactsLoader";
 
-import styles from "./contactsList.module.css";
+import {
+  selectContactsIsLoading,
+  selectFilteredContacts,
+} from "../../redux/contacts/selectors";
+import { addCall } from "../../redux/calls/operations";
+import { deleteContact, fetchContacts } from "../../redux/contacts/operations";
+
 export default function ContactsList() {
   const dispatch = useDispatch();
+  const isLoading = useSelector(selectContactsIsLoading);
   const filteredContacts = useSelector(selectFilteredContacts);
+  useEffect(() => {
+    if (!filteredContacts.length) dispatch(fetchContacts());
+  }, [filteredContacts.length, dispatch]);
+  if (isLoading) return <ContactsLoader />;
   return (
     <ul className="space-y-3">
       {filteredContacts.map(({ id, name, number, calls }) => (

@@ -1,8 +1,8 @@
 import { useDispatch, useSelector } from "react-redux";
-import { makeSelectCallsForContact } from "../../../redux/selectors";
 
-import styles from "./callsList.module.css";
-import { deleteCall } from "../../../redux/operations";
+import { makeSelectCallsForContact } from "../../redux/calls/selectors";
+import { deleteCall } from "../../redux/calls/operations";
+
 export default function CallsList({ contactId, ids }) {
   const calls = useSelector(makeSelectCallsForContact(ids));
   const dispatch = useDispatch();

@@ -1,8 +1,9 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { selectFilter } from "../../../redux/selectors";
-import { setFilter } from "../../../redux/filtersSlice";
-import { selectContacts } from "../../../redux/contactsSlice";
+
+import { selectFilter } from "../../redux/selectors";
+import { setFilter } from "../../redux/filtersSlice";
+import { selectContacts } from "../../redux/contacts/contactsSlice";
 
 export default function Finder() {
   const filter = useSelector(selectFilter);
