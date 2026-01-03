@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { loginUser } from "../../redux/user/operations";
 import { selectUserIsLoading } from "../../redux/user/selectors";
 import Loader from "../loader/Loader";
+import { addNotification } from "../../redux/notifications/notificationsSlice";
 
 const Login = () => {
   const dispatch = useDispatch();
@@ -15,6 +16,14 @@ const Login = () => {
     const res = await dispatch(
       loginUser({ email: form.email.value, password: form.password.value })
     );
+    if (loginUser.fulfilled.match(res))
+      dispatch(
+        addNotification({ message: "You’re now logged in", type: "success" })
+      );
+    if (loginUser.rejected.match(res))
+      dispatch(
+        addNotification({ message: "Something went wrong", type: "error" })
+      );
     if (res.type.includes("fulfilled")) navigate("/contacts");
   };
   return (

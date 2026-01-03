@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { selectUser } from "../../redux/user/selectors";
 import { logoutUser } from "../../redux/user/operations";
 import { useNavigate } from "react-router-dom";
+import { addNotification } from "../../redux/notifications/notificationsSlice";
 
 const UserMenu = () => {
   const user = useSelector(selectUser);
@@ -11,6 +12,12 @@ const UserMenu = () => {
   const onClick = () => {
     navigate("/");
     dispatch(logoutUser());
+    dispatch(
+      addNotification({
+        message: "Logout successful.",
+        type: "success",
+      })
+    );
   };
   return (
     <div className="flex items-center gap-3">

@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 
 import { registerUser } from "../../redux/user/operations";
 import { selectUserIsLoading } from "../../redux/user/selectors";
+import Loader from "../loader/Loader";
 
 const Register = () => {
   const dispatch = useDispatch();
@@ -18,6 +19,14 @@ const Register = () => {
         password: form.password.value,
       })
     );
+    if (registerUser.fulfilled.match(res))
+      dispatch(
+        addNotification({ message: "Thanks for signing up!", type: "success" })
+      );
+    if (registerUser.rejected.match(res))
+      dispatch(
+        addNotification({ message: "Something went wrong", type: "error" })
+      );
     if (res.type.includes("fulfilled")) navigate("/contacts");
   };
   return (
